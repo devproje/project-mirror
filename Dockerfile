@@ -1,6 +1,7 @@
 FROM golang:1.20.7-alpine3.17
 
 ARG FILE_NAME
+ENV FILE_NAME=${FILE_NAME}
 
 RUN apk update
 RUN apk add make
