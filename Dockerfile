@@ -1,8 +1,5 @@
 FROM golang:1.20.7-alpine3.17
 
-ARG FILE_NAME
-ENV FILE_NAME=${FILE_NAME}
-
 RUN apk update
 RUN apk add make
 
@@ -12,11 +9,11 @@ COPY . .
 
 # build
 RUN make
-RUN mv ${FILE_NAME} ../
+RUN mv project-mirror ../
 
 WORKDIR /usr/local/app
 
 # Remove build source
 RUN rm -rf ./src
 
-ENTRYPOINT [ "/usr/local/app/${FILE_NAME}" ]
+ENTRYPOINT [ "/usr/local/app/project-mirror" ]

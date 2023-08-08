@@ -6,8 +6,6 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-      args:
-        - project-mirror
     privileged: true
     restart: always
     volumes:
