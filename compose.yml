@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  template:
+    container_name: template
+    image: go-app-template
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - project-mirror
+    privileged: true
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
