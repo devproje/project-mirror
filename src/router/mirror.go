@@ -68,17 +68,17 @@ func dirList(path string) (*string, error) {
 
 	var items = ""
 	if path != ".data" {
-		items += "<a id='item' href='../'>../</a>\n"
+		items += "<a id='item' href='../'><p>../</p></a>\n"
 	}
 
 	for _, i := range dir {
 		ph := strings.ReplaceAll(fmt.Sprintf("%s/%s", path, i.Name()), ".data/", "")
 		if i.IsDir() {
-			items += fmt.Sprintf("<a id='item' href='/%s'>%s</a>\n", ph, i.Name())
+			items += fmt.Sprintf("<a id='item' href='/%s'><p>%s/</p></a>\n", ph, i.Name())
 			break
 		}
 
-		items += fmt.Sprintf("<a id='item' href='/file/%s'>%s</a>\n", ph, i.Name())
+		items += fmt.Sprintf("<a id='item' href='/file/%s'><p>%s</p></a>\n", ph, i.Name())
 	}
 
 	return &items, nil

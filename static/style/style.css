@@ -9,9 +9,13 @@
     font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
         "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 
-    --background-color: #21262D;
-    --border-color: #999999;
-    --font-color: #FFFFFF;
+    --background-color: #21262d;
+    --border-color: #999;
+    --font-color: #fff;
+    --font-hover: #ddd;
+    --font-focus: #aaa;
+    --item-hover: #ffffff22;
+    --item-focus: #ffffff11;
 }
 
 html, body {
@@ -22,12 +26,36 @@ html, body {
     flex-direction: column;
 }
 
+nav {
+    width: 100%;
+    height: 60px;
+    padding-left: 10%;
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+    justify-content: center;   
+}
+
 footer {
     margin: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+a {
+    color: var(--font-color);
+    text-decoration: none;
+    transition-duration: 300ms;
+}
+
+a:hover {
+    color: var(--font-hover);
+}
+
+a:focus {
+    color: var(--font-focus);
 }
 
 .container {
@@ -52,12 +80,25 @@ footer {
     width: 100%;
     height: 40px;
     display: flex;
-    margin-left: 10px;
     align-items: center;
     color: var(--font-color);
+    transition-duration: 300ms;
     text-decoration: none;
 }
 
+#item > p {
+    position: relative;
+    display: block;
+    left: 10px;
+}
+
 #item:hover {
-    background-color: #FFFFFF00;
+    border-radius: 10px;
+    background-color: var(--item-hover);
+    transition-duration: 300ms;
+}
+
+#item:focus {
+    border-radius: 10px;
+    background-color: var(--item-focus);
 }

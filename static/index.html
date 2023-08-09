@@ -3,15 +3,16 @@
     <head>
         <title>Project_IO's Mirror</title>
         <link href="/static/style/style.css" rel="stylesheet" type="text/css" />
-        <link href="/static/style/header.css" rel="stylesheet" type="text/css" />
         <link href="/static/favicon.ico" rel="icon" type="image/x-icon" />
-
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta charset="UTF-8"/>
     </head>
     <body>
-        {{ template "header.html" }}
-
+        <nav>
+            <a href="/">
+                <h1 class="title">Project_IO's Mirror</h1>
+            </a>
+        </nav>
         <div class="container">
             <h3><b>Path:</b> {{ .dir_name }}</h3>
             <div class="items">
@@ -19,7 +20,7 @@
             </div>
         </div>
         <footer>
-            <p id="copyright">&#169; Copyright 2023 Project_IO. All Rights Reserved.</p>
+            <p id="copyright">&#169; Copyright 2023 <a href="https://github.com/devproje">Project_IO</a>. All Rights Reserved.</p>
         </footer>
     </body>
 </html>

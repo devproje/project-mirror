@@ -12,12 +12,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var port = 3000
+var (
+	port  = 3000
+	debug = false
+)
 
 func init() {
 	flag.IntVar(&port, "port", 3000, "set service port")
+	flag.BoolVar(&debug, "debug", false, "set debug mode")
+	flag.Parse()
+
 	log.SetLevel(level.Info)
 	gin.SetMode(gin.ReleaseMode)
+	if debug {
+		log.SetLevel(level.Trace)
+		gin.SetMode(gin.DebugMode)
+	}
+
 	if _, err := os.Stat(".data"); err != nil {
 		err := os.Mkdir(".data", 0755)
 		if err != nil {
