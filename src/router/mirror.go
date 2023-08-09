@@ -14,7 +14,14 @@ func mirror(ctx *gin.Context) {
 }
 
 func mirrorPath(ctx *gin.Context) {
-	path, _ := ctx.Params.Get("path")
+	origin := ctx.Param("path")
+	child := ctx.Param("child")
+
+	var path = origin
+	if child != "/" {
+		path = fmt.Sprintf("%s%s", origin, child)
+	}
+
 	mirrorWorker(ctx, path)
 }
 
