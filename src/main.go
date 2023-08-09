@@ -32,6 +32,9 @@ func main() {
 	app.LoadHTMLGlob("static/*.html")
 	router.New(app)
 
+	go func() {
+		log.Infof("service port bind: %d\n", port)
+	}()
 	err := app.Run(fmt.Sprintf(":%d", port))
 	if err != nil {
 		log.Fatalf("current port already binding: %d\n", port)

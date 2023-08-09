@@ -10,6 +10,7 @@ COPY . .
 # build
 RUN make
 RUN mv project-mirror ../
+RUN cp -r static/ ../
 
 WORKDIR /usr/local/app
 
