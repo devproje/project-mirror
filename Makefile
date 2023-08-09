@@ -1,5 +1,5 @@
 TARGET=project-mirror
-SOURCES= ./src/*.go
+SOURCES= ./src/*.go ./src/**/*.go
 MAIN=./src/main.go
 
 TAG=default
