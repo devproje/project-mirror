@@ -2,15 +2,13 @@ package router
 
 import (
 	"fmt"
-	"html/template"
-	"os"
-	"strings"
 
+	"github.com/devproje/project-mirror/src/util"
 	"github.com/gin-gonic/gin"
 )
 
 func mirror(ctx *gin.Context) {
-	mirrorWorker(ctx, "/")
+	util.MirrorWorker(ctx, "/")
 }
 
 func mirrorPath(ctx *gin.Context) {
@@ -22,88 +20,5 @@ func mirrorPath(ctx *gin.Context) {
 		path = fmt.Sprintf("%s%s", origin, child)
 	}
 
-	mirrorWorker(ctx, path)
-}
-
-func mirrorWorker(ctx *gin.Context, path string) {
-	var status = 200
-	var targetPath = path
-
-	c, err := dirList(fmt.Sprintf(".data/%s", targetPath))
-	if err != nil {
-		status = 500
-		ctx.JSON(status, gin.H{
-			"status": status,
-			"reason": err.Error(),
-		})
-
-		return
-	}
-	if targetPath == "/" {
-		c, err = dirList(".data")
-		if err != nil {
-			status = 500
-			ctx.JSON(status, gin.H{
-				"status": status,
-				"reason": err.Error(),
-			})
-
-			return
-		}
-	}
-
-	if targetPath[0] != '/' {
-		targetPath = "/" + targetPath
-	}
-
-	ctx.HTML(status, "index.html", gin.H{
-		"dir_name": targetPath,
-		"content":  template.HTML(*c),
-	})
-}
-
-func dirList(path string) (*string, error) {
-	_, err := os.Stat(path)
-	if err != nil {
-		return nil, err
-	}
-
-	dir, err := os.ReadDir(path)
-	if err != nil {
-		return nil, err
-	}
-
-	var items = ""
-	if path != ".data" {
-		var back = strings.ReplaceAll(path, ".data", "")
-		split := strings.Split(back, "/")
-		split = split[:len(split)-1]
-
-		var backPath = ""
-		for i, j := range split {
-			if i == len(split)-1 {
-				backPath += j
-				break
-			}
-
-			backPath += fmt.Sprintf("%s/", j)
-		}
-
-		if backPath == "" {
-			backPath = "../"
-		}
-
-		items += fmt.Sprintf("<a id='item' href='%s'><p>../</p></a>\n", backPath)
-	}
-
-	for _, i := range dir {
-		ph := strings.ReplaceAll(fmt.Sprintf("%s/%s", path, i.Name()), ".data/", "")
-		if i.IsDir() {
-			items += fmt.Sprintf("<a id='item' href='/%s'><p>%s/</p></a>\n", ph, i.Name())
-		} else {
-			items += fmt.Sprintf("<a id='item' href='/file/%s'><p>%s</p></a>\n", ph, i.Name())
-		}
-	}
-
-	return &items, nil
+	util.MirrorWorker(ctx, path)
 }
