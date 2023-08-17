@@ -11,7 +11,10 @@ COPY . .
 RUN make
 RUN mv project-mirror ../
 RUN cp -r static/ ../
-RUN cp server.json ../
+RUN if [ -f "server.json" ] \
+then \
+    cp server.json ../ \
+fi
 
 WORKDIR /usr/local/app
 

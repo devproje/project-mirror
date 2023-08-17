@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/devproje/project-mirror/config"
+	"github.com/devproje/project-mirror/src/config"
 	"github.com/gin-gonic/gin"
 )
 
