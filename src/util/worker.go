@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/devproje/project-mirror/config"
 	"github.com/gin-gonic/gin"
 )
 
@@ -29,6 +30,7 @@ func MirrorWorker(ctx *gin.Context, path string) {
 	}
 
 	ctx.HTML(200, "index.html", gin.H{
+		"name":     config.Get().Name,
 		"dir_name": targetPath,
 		"content":  template.HTML(*c),
 	})
