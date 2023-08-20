@@ -2,16 +2,20 @@
 <html lang="en">
     <head>
         <title>{{ .name }}</title>
-        <link href="/static/style/style.css?ver=1.1" rel="stylesheet" type="text/css" />
+        <link href="/static/style/style.css?ver=1.2" rel="stylesheet" type="text/css" />
         <link href="/static/favicon.ico" rel="icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta charset="UTF-8"/>
     </head>
     <body>
         <nav>
-            <a href="/">
-                <h1 class="title">{{ .name }}</h1>
-            </a>
+            <div class="nav_container">
+                <a href="/">
+                    <h1 class="title">{{ .name }}</h1>
+                </a>
+                <div class="heap"></div>
+                {{ .logout }}
+            </div>
         </nav>
         <div class="container">
             <h3><b>Path:</b> {{ .dir_name }}</h3>

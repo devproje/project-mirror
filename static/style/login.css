@@ -1,0 +1,102 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
+
+@font-face {
+    font-family: "Pretendard";
+    src: url("/static/fonts/Pretendard-Regular.woff2");
+}
+
+* {
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+        "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+
+    --background-color: #21262d;
+    --border-color: #999;
+    --font-color: #fff;
+    --font-hover: #ddd;
+    --font-focus: #aaa;
+    --item-hover: #ffffff22;
+    --item-focus: #ffffff11;
+
+    --input-width: 400px;
+    --input-height: 30px;
+    --input-font: 13pt;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    color: var(--font-color);
+    background-color: var(--background-color);
+}
+
+form {
+    width: 30%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+input[type="text"], input[type="password"] {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: var(--font-color);
+    width: var(--input-width);
+    transition-duration: 300ms;
+    height: var(--input-height);
+    font-size: var(--input-font);
+    border: var(--border-color) solid 1px;
+    background-color: var(--background-color);
+}
+
+input[type="submit"] {
+    height: 42px;
+    width: 422px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: var(--font-color);
+    transition-duration: 300ms;
+    font-size: var(--input-font);
+    border: var(--border-color) solid 1px;
+    background-color: var(--background-color);
+}
+
+input[type="text"]:hover, input[type="password"]:hover, input[type="submit"]:hover {
+    transition-duration: 300ms;
+    border: var(--font-hover) solid 1px;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="submit"]:focus {
+    outline: none;
+    transition-duration: 300ms;
+    border: var(--font-focus) solid 1px;
+}
+
+.text_container {
+    display: flex;
+    margin: 10px 0;
+    flex-direction: column;
+}
+
+.text_container > input {
+    margin: 4px 0;
+}
+
+.submit_container {
+    display: flex;
+    margin: 20px 0;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.submit_container > input {
+    margin: 5px 0;
+}

@@ -3,12 +3,11 @@ package router
 import (
 	"fmt"
 
-	"github.com/devproje/project-mirror/src/util"
 	"github.com/gin-gonic/gin"
 )
 
 func mirror(ctx *gin.Context) {
-	util.MirrorWorker(ctx, "/")
+	MirrorWorker(ctx, "/")
 }
 
 func mirrorPath(ctx *gin.Context) {
@@ -20,5 +19,5 @@ func mirrorPath(ctx *gin.Context) {
 		path = fmt.Sprintf("%s%s", origin, child)
 	}
 
-	util.MirrorWorker(ctx, path)
+	MirrorWorker(ctx, path)
 }

@@ -3,12 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
 	"text/template"
 
 	"github.com/devproje/plog/level"
 	"github.com/devproje/plog/log"
+	"github.com/devproje/project-mirror/src/auth"
 	"github.com/devproje/project-mirror/src/router"
+	"github.com/devproje/project-mirror/src/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -29,15 +30,17 @@ func init() {
 		gin.SetMode(gin.DebugMode)
 	}
 
-	if _, err := os.Stat(".data"); err != nil {
-		err := os.Mkdir(".data", 0755)
-		if err != nil {
-			log.Fatalln(err)
-		}
+	if err := util.CreateDir(".data"); err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := util.CreateDir(".tmp"); err != nil {
+		log.Fatalln(err)
 	}
 }
 
 func main() {
+	auth.Init()
 	app := gin.Default()
 	app.SetFuncMap(template.FuncMap{})
 	app.LoadHTMLGlob("static/*.html")

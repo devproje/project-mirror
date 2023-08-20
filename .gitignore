@@ -1,4 +1,13 @@
+# IDE settings
 .idea/
+.code/
+
+# Server data
 .data/
+.tmp/
+
+# Build file
 project-mirror
+
+# Server config file
 server.json
