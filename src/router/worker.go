@@ -6,79 +6,62 @@ import (
 	"os"
 	"strings"
 
+	"github.com/devproje/plog/log"
 	"github.com/devproje/project-mirror/src/config"
 	"github.com/gin-gonic/gin"
 )
 
 func MirrorWorker(ctx *gin.Context, path string) {
-	var logout = "<a href=\"https://github.com/devproje/project-mirror\"><i class='bi bi-github'></i>\n</a>"
 	if config.Get().Auth {
 		_, status := CheckLogin(ctx)
 		if status != 200 {
 			ctx.Redirect(301, "/v1/login")
 			return
 		}
+		log.Debugln("test")
 	}
 
-	var targetPath = path
-	c, err := dirList(fmt.Sprintf(".data/%s", targetPath))
+	iPath := fmt.Sprintf(".data/%s", path)
+	file, err := os.Stat(iPath)
 	if err != nil {
-		errorHandler(ctx, err)
+		ctx.JSON(500, gin.H{
+			"status": 500,
+			"error":  err.Error(),
+		})
+		return
 	}
+	log.Debugln("test")
 
-	if targetPath == "/" {
-		c, err = dirList(".data")
-		if err != nil {
-			errorHandler(ctx, err)
-			return
-		}
+	if !file.IsDir() {
+		ctx.FileAttachment(iPath, file.Name())
+		return
 	}
+	log.Debugln("test")
 
-	if targetPath[0] != '/' {
-		targetPath = "/" + targetPath
-	}
-
+	dir := ReadDir(path)
 	ctx.HTML(200, "index.html", gin.H{
 		"name":     config.Get().Name,
-		"dir_name": targetPath,
-		"logout":   template.HTML(logout),
-		"content":  template.HTML(*c),
+		"dir_name": path,
+		"content":  template.HTML(*dir),
 	})
 }
 
-func errorHandler(ctx *gin.Context, err error) {
-	var status = 500
-	ctx.JSON(status, gin.H{
-		"status": status,
-		"reason": err.Error(),
-	})
-}
+func ReadDir(path string) *string {
+	dir, _ := os.ReadDir(fmt.Sprintf(".data/%s", path))
+	var back, items string
 
-func dirList(path string) (*string, error) {
-	_, err := os.Stat(path)
-	if err != nil {
-		return nil, err
-	}
-
-	dir, err := os.ReadDir(path)
-	if err != nil {
-		return nil, err
-	}
-
-	var items = ""
-	if path != ".data" {
-		var back = strings.ReplaceAll(path, ".data", "")
-		split := strings.Split(back, "/")
+	if path != "/" {
+		split := strings.Split(path, "/")
 		split = split[:len(split)-1]
 
-		back = ""
-		for i, j := range split {
+		back = "/"
+		for i, p := range split {
 			if i == len(split)-1 {
-				back += j
+				back += p
 				break
 			}
 
-			back += fmt.Sprintf("%s/", j)
+			back += fmt.Sprintf("%s/", p)
 		}
 
 		if back == "" {
@@ -88,14 +71,18 @@ func dirList(path string) (*string, error) {
 		items += fmt.Sprintf("<a id='item' href='%s'><p>../</p></a>\n", back)
 	}
 
-	for _, i := range dir {
-		ph := strings.ReplaceAll(fmt.Sprintf("%s/%s", path, i.Name()), ".data/", "")
-		if i.IsDir() {
-			items += fmt.Sprintf("<a id='item' href='/%s'><p>%s/</p></a>\n", ph, i.Name())
+	for _, item := range dir {
+		ph := fmt.Sprintf("%s/%s", path, item.Name())
+		if path == "/" {
+			ph = fmt.Sprintf("%s", item.Name())
+		}
+
+		if item.IsDir() {
+			items += fmt.Sprintf("<a id='item' href='/%s'><p>%s/</p></a>\n", ph, item.Name())
 		} else {
-			items += fmt.Sprintf("<a id='item' href='/file/%s'><p>%s</p></a>\n", ph, i.Name())
+			items += fmt.Sprintf("<a id='item' href='/%s'><p>%s</p></a>\n", ph, item.Name())
 		}
 	}
 
-	return &items, nil
+	return &items
 }
