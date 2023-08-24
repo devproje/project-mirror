@@ -11,7 +11,6 @@ COPY . .
 RUN make
 RUN mv project-mirror ../
 RUN cp -r static/ ../
-RUN ./scripts/config.sh
 
 WORKDIR /usr/local/app
 
