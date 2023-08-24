@@ -31,6 +31,14 @@ func init() {
 			log.Fatalln(err)
 		}
 	}
+
+	if err := util.CreateDir(".data"); err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := util.CreateDir(".tmp"); err != nil {
+		log.Fatalln(err)
+	}
 }
 
 func Get() *Config {

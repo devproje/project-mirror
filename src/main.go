@@ -9,7 +9,6 @@ import (
 	"github.com/devproje/plog/log"
 	"github.com/devproje/project-mirror/src/auth"
 	"github.com/devproje/project-mirror/src/router"
-	"github.com/devproje/project-mirror/src/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,14 +27,6 @@ func init() {
 	if debug {
 		log.SetLevel(level.Trace)
 		gin.SetMode(gin.DebugMode)
-	}
-
-	if err := util.CreateDir(".data"); err != nil {
-		log.Fatalln(err)
-	}
-
-	if err := util.CreateDir(".tmp"); err != nil {
-		log.Fatalln(err)
 	}
 }
 
