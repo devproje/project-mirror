@@ -83,7 +83,7 @@ a:focus {
 
 .items {
     margin-top: 30px;
-    width: 40%;
+    width: 45%;
     height: fit-content;
     border-radius: 10px;
     border: 0.1rem solid;
@@ -98,13 +98,25 @@ a:focus {
     color: var(--font-color);
     transition-duration: 300ms;
     text-decoration: none;
+    justify-content: space-between;
 }
 
-
-#item > p {
+#name {
     position: relative;
     display: block;
     left: 10px;
+}
+
+#size {
+    position: relative;
+    display: block;
+    left: 50px;
+}
+
+#date {
+    position: relative;
+    display: block;
+    right: 10px;
 }
 
 #item:hover {

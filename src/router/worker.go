@@ -68,7 +68,7 @@ func ReadDir(path string) *string {
 			back = "../"
 		}
 
-		items += fmt.Sprintf("<a id='item' href='%s'><p>../</p></a>\n", back)
+		items += fmt.Sprintf("<a id='item' href='%s'><p id='name'>../</p></a>\n", back)
 	}
 
 	for _, item := range dir {
@@ -77,10 +77,18 @@ func ReadDir(path string) *string {
 			ph = fmt.Sprintf("%s", item.Name())
 		}
 
+		fileinfo, _ := item.Info()
+		format := "2006-01-02 03:04 PM"
 		if item.IsDir() {
-			items += fmt.Sprintf("<a id='item' href='/%s'><p>%s/</p></a>\n", ph, item.Name())
+			items += fmt.Sprintf("<a id='item' href='/%s'><p id='name'>%s/</p><p id='date'>%s</p></a>\n", ph, item.Name(), fileinfo.ModTime().Format(format))
 		} else {
-			items += fmt.Sprintf("<a id='item' href='/%s'><p>%s</p></a>\n", ph, item.Name())
+
+			items += fmt.Sprintf(
+				"<a id='item' href='/%s'><p id='name'>%s</p><p id='date'>%s</p></a>\n",
+				ph,
+				item.Name(),
+				fileinfo.ModTime().Format(format),
+			)
 		}
 	}
 
