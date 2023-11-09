@@ -34,7 +34,7 @@ func main() {
 	auth.Init()
 	app := gin.Default()
 	app.SetFuncMap(template.FuncMap{})
-	app.LoadHTMLGlob("static/*.html")
+	app.LoadHTMLGlob("pages/*.html")
 	router.New(app)
 
 	go func() {

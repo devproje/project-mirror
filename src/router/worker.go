@@ -11,6 +11,29 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func createFileElement(path string, fileinfo os.FileInfo) string {
+	format := "2006-01-02 03:04 PM"
+	var filename string
+	modified := fileinfo.ModTime().Format(format)
+	if fileinfo.IsDir() {
+		filename = fileinfo.Name() + "/"
+	} else {
+		filename = fileinfo.Name()
+	}
+
+	return fmt.Sprintf(
+		`<a class="file" href="%s">
+			<p class="file_name">%s</p>
+			<p class="file_size">%d bytes</p>
+			<p class="file_modified">%s</p>
+		</a>`,
+		path,
+		filename,
+		fileinfo.Size(),
+		modified,
+	)
+}
+
 func MirrorWorker(ctx *gin.Context, path string) {
 	if config.Get().Auth {
 		_, status := CheckLogin(ctx)
@@ -48,7 +71,7 @@ func MirrorWorker(ctx *gin.Context, path string) {
 
 func ReadDir(path string) *string {
 	dir, _ := os.ReadDir(fmt.Sprintf(".data/%s", path))
-	var back, items string
+	var back, files string
 
 	if path != "/" {
 		split := strings.Split(path, "/")
@@ -68,29 +91,25 @@ func ReadDir(path string) *string {
 			back = "../"
 		}
 
-		items += fmt.Sprintf("<a id='item' href='%s'><p id='name'>../</p></a>\n", back)
+		files += fmt.Sprintf(
+			`<a class="file" href="%s">
+				<p class="file_name">../</p>
+				<p class="file_size"></p>
+				<p class="file_modified"></p>
+			</a>`,
+			back,
+		)
 	}
 
-	for _, item := range dir {
-		ph := fmt.Sprintf("%s/%s", path, item.Name())
+	for _, file := range dir {
+		ph := fmt.Sprintf("/%s/%s", path, file.Name())
 		if path == "/" {
-			ph = fmt.Sprintf("%s", item.Name())
+			ph = fmt.Sprint(file.Name())
 		}
 
-		fileinfo, _ := item.Info()
-		format := "2006-01-02 03:04 PM"
-		if item.IsDir() {
-			items += fmt.Sprintf("<a id='item' href='/%s'><p id='name'>%s/</p><p id='date'>%s</p></a>\n", ph, item.Name(), fileinfo.ModTime().Format(format))
-		} else {
-
-			items += fmt.Sprintf(
-				"<a id='item' href='/%s'><p id='name'>%s</p><p id='date'>%s</p></a>\n",
-				ph,
-				item.Name(),
-				fileinfo.ModTime().Format(format),
-			)
-		}
+		fileinfo, _ := file.Info()
+		files += createFileElement(ph, fileinfo)
 	}
 
-	return &items
+	return &files
 }
