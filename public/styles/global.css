@@ -48,50 +48,37 @@ a:focus {
     transition-duration: 300ms;
 }
 
+form {
+    width
+}
+
 .container {
-    width: 70%;
-    height: fit-content;
+    width: 700px;
     display: flex;
+    height: fit-content;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.files {
-    border-top: 1px solid;
-    border-bottom: 1px solid;
-    margin: 30px 0;
-    margin-top: 0;
+.views {
     width: 100%;
-    height: 100%;
+    border-bottom: 1px solid;
+    border-collapse: collapse;
+
+    margin: 30px;
 }
 
-.file {
-    display: flex;
+.views td {
+    width: 30%;
     padding: 7px 5px;
-    flex-direction: row;
 }
 
 .file:hover {
-    background-color: rgba(0, 0, 0, 0.2);
+    transition-duration: 300ms;
+    background-color: #ffffff22;
 }
 
-.file_size {
-    margin-left: auto;
-}
-
-.file_modified {
-    margin-left: auto;
-}
-
-.files_title {
-    width: 100%;
-    height: 100%;
-    margin-top: 30px;
-}
-
-.file_desc {
-    display: flex;
-    padding: 7px 5px;
-    flex-direction: row;
+.views .index_title {
+    border-bottom: 1px solid;
 }
