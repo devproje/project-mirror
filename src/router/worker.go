@@ -63,7 +63,7 @@ func MirrorWorker(ctx *gin.Context, path string) {
 	if config.Get().Auth {
 		_, status := CheckLogin(ctx)
 		if status != 200 {
-			ctx.Redirect(301, "/v1/login")
+			ctx.Redirect(301, "/login")
 			return
 		}
 	}

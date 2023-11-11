@@ -6,14 +6,26 @@ nav {
 }
 
 .left {
-    position: fixed;
     left: 100px;
+    position: fixed;
 }
 
 .right {
     margin-left: auto;
 }
 
-.icon {
-    padding-right: 100px;
+@media (max-width: 767px) {
+    .left {
+        left: 10px;
+    }
+
+    .icon {
+        padding-right: 10px;
+    }
+}
+
+@media (min-width: 768px) {
+    .icon {
+        padding-right: 100px;
+    }
 }
