@@ -11,7 +11,8 @@ COPY . .
 # build
 RUN make
 RUN mv project-mirror ../
-RUN cp -r public/ ../
+RUN cp -rv public/ ../
+RUN cp -rv pages/ ../
 
 WORKDIR /usr/local/app
 
