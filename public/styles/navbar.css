@@ -1,0 +1,31 @@
+nav {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.left {
+    left: 100px;
+    position: fixed;
+}
+
+.right {
+    margin-left: auto;
+}
+
+@media (max-width: 767px) {
+    .left {
+        left: 10px;
+    }
+
+    .icon {
+        padding-right: 10px;
+    }
+}
+
+@media (min-width: 768px) {
+    .icon {
+        padding-right: 100px;
+    }
+}

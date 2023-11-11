@@ -3,22 +3,69 @@ package router
 import (
 	"fmt"
 	"html/template"
+	"math"
 	"os"
 	"strings"
 
-	"github.com/devproje/plog/log"
 	"github.com/devproje/project-mirror/src/config"
 	"github.com/gin-gonic/gin"
 )
 
+type FileData struct {
+	URL      string
+	Name     string
+	Size     string
+	Modified string
+}
+
+func arrToStr(arr []FileData) *string {
+	var str = ""
+	for _, i := range arr {
+		str += createElement(i.URL, i.Name, i.Size, i.Modified)
+	}
+
+	return &str
+}
+
+func getFileSize(size float64) string {
+	var suffixes = [5]string{"Bytes", "KB", "MB", "GB", "TB"}
+	if size == 0 {
+		return fmt.Sprintf("%.0f %s", size, suffixes[0])
+	}
+
+	base := math.Log(float64(size)) / math.Log(1024)
+	converted := math.Pow(1024, base-math.Floor(base))
+	suffix := suffixes[int(math.Floor(base))]
+
+	if size > 1023 {
+		return fmt.Sprintf("%.1f %s", converted, suffix)
+	}
+
+	return fmt.Sprintf("%.0f %s", converted, suffix)
+}
+
+func createElement(path, name, size, modified string) string {
+	return fmt.Sprintf(
+		`<tr class="file">
+			<td><a href="%s">%s</a></td>
+			<td>%s</td>
+			<td>%s</td>
+		</tr>`,
+		path,
+		name,
+		size,
+		modified,
+	)
+}
+
 func MirrorWorker(ctx *gin.Context, path string) {
+	sort, asc := ctx.GetQuery("sort")
 	if config.Get().Auth {
 		_, status := CheckLogin(ctx)
 		if status != 200 {
-			ctx.Redirect(301, "/v1/login")
+			ctx.Redirect(301, "/login")
 			return
 		}
-		log.Debugln("test")
 	}
 
 	iPath := fmt.Sprintf(".data/%s", path)
@@ -30,15 +77,13 @@ func MirrorWorker(ctx *gin.Context, path string) {
 		})
 		return
 	}
-	log.Debugln("test")
 
 	if !file.IsDir() {
 		ctx.FileAttachment(iPath, file.Name())
 		return
 	}
-	log.Debugln("test")
 
-	dir := ReadDir(path)
+	dir := read(path, sort, asc)
 	ctx.HTML(200, "index.html", gin.H{
 		"name":     config.Get().Name,
 		"dir_name": path,
@@ -46,9 +91,10 @@ func MirrorWorker(ctx *gin.Context, path string) {
 	})
 }
 
-func ReadDir(path string) *string {
+func read(path string, srt string, asc bool) *string {
 	dir, _ := os.ReadDir(fmt.Sprintf(".data/%s", path))
-	var back, items string
+	var back string
+	var files []FileData
 
 	if path != "/" {
 		split := strings.Split(path, "/")
@@ -68,29 +114,40 @@ func ReadDir(path string) *string {
 			back = "../"
 		}
 
-		items += fmt.Sprintf("<a id='item' href='%s'><p id='name'>../</p></a>\n", back)
+		files = append(files, FileData{
+			URL:      back,
+			Name:     "../",
+			Size:     "-",
+			Modified: "-",
+		})
 	}
 
-	for _, item := range dir {
-		ph := fmt.Sprintf("%s/%s", path, item.Name())
+	for _, file := range dir {
+		ph := fmt.Sprintf("/%s/%s", path, file.Name())
 		if path == "/" {
-			ph = fmt.Sprintf("%s", item.Name())
+			ph = fmt.Sprint(file.Name())
 		}
 
-		fileinfo, _ := item.Info()
 		format := "2006-01-02 03:04 PM"
-		if item.IsDir() {
-			items += fmt.Sprintf("<a id='item' href='/%s'><p id='name'>%s/</p><p id='date'>%s</p></a>\n", ph, item.Name(), fileinfo.ModTime().Format(format))
+		var name, size string
+		finfo, _ := file.Info()
+		modified := finfo.ModTime().Format(format)
+		if file.IsDir() {
+			name = file.Name() + "/"
+			size = "-"
+			modified = "-"
 		} else {
-
-			items += fmt.Sprintf(
-				"<a id='item' href='/%s'><p id='name'>%s</p><p id='date'>%s</p></a>\n",
-				ph,
-				item.Name(),
-				fileinfo.ModTime().Format(format),
-			)
+			name = file.Name()
+			size = getFileSize(float64(finfo.Size()))
 		}
+
+		files = append(files, FileData{
+			URL:      ph,
+			Name:     name,
+			Size:     size,
+			Modified: modified,
+		})
 	}
 
-	return &items
+	return arrToStr(files)
 }

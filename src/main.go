@@ -32,16 +32,27 @@ func init() {
 
 func main() {
 	auth.Init()
+	var url string
 	app := gin.Default()
 	app.SetFuncMap(template.FuncMap{})
-	app.LoadHTMLGlob("static/*.html")
+	app.LoadHTMLGlob("pages/*.html")
 	router.New(app)
 
 	go func() {
-		log.Infof("service port bind: %d\n", port)
+		if !debug {
+			log.Infof("service port listening for: %d\n", port)
+		} else {
+			log.Debugf("development service listening for: http://localhost:%d\n", port)
+		}
 	}()
 
-	err := app.Run(fmt.Sprintf(":%d", port))
+	if !debug {
+		url = fmt.Sprintf(":%d", port)
+	} else {
+		url = fmt.Sprintf("127.0.0.1:%d", port)
+	}
+
+	err := app.Run(url)
 	if err != nil {
 		log.Fatalf("current port already binding: %d\n", port)
 	}

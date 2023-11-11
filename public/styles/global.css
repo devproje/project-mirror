@@ -1,0 +1,97 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
+
+@font-face {
+    font-family: "Pretendard";
+    src: url("/public/fonts/Pretendard-Regular.woff2");
+}
+
+* {
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+        "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+
+    --background-color: #21262d;
+    --font-color: #ffffff;
+
+    --border-color: #999;
+    --hover-color: #dddddd;
+    --focus-color: #aaaaaa;
+    --item-hover: #ffffff22;
+    --item-focus: #ffffff11;
+}
+
+html, body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--font-color);
+    transition-duration: 300ms;
+    background-color: var(--background-color);
+}
+
+a {
+    text-decoration: none;
+    color: var(--font-color);
+    transition-duration: 300ms;
+}
+
+a:hover {
+    color: var(--hover-color);
+    transition-duration: 300ms;
+}
+
+a:focus {
+    color: var(--focus-color);
+    transition-duration: 300ms;
+}
+
+.container {
+    display: flex;
+    height: fit-content;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@media (max-width: 767px) {
+    .container {
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 800px) {
+    .container {
+        width: 100%;
+    }
+} 
+
+@media (min-width: 800px) {
+    .container {
+        width: 800px;
+    }
+}
+
+.views {
+    width: 100%;
+    border-bottom: 1px solid;
+    border-collapse: collapse;
+
+    margin: 30px;
+}
+
+.views td {
+    width: 30%;
+    padding: 7px 5px;
+}
+
+.file:hover {
+    transition-duration: 300ms;
+    background-color: #ffffff22;
+}
+
+.views .index_title {
+    border-bottom: 1px solid;
+}

@@ -53,7 +53,7 @@ func LoginForm(ctx *gin.Context) {
 		ctx.Redirect(301, "/")
 	}
 
-	ctx.HTML(404, "login.html", gin.H{
+	ctx.HTML(401, "login.html", gin.H{
 		"name": config.Get().Name,
 	})
 }

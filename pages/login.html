@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>Login</title>
+
+        <link rel="icon" href="/public/favicon.ico"/>
+        <link rel="stylesheet" href="/public/styles/global.css"/>
+    </head>
+    <body>
+        <div class="container">
+            <form action="/v1/login" method="post">
+                <!-- TODO: rewrite -->
+                <h1>{{ .name }}</h1>
+                <div class="text_container">
+                    <input type="text" name="Username" id="username" placeholder="Username"/>
+                    <input type="password", name="Password" id="password" placeholder="Password">
+                </div>
+                <div class="submit_container">
+                    {{ .message }}
+                    <input type="submit" value="Login" class="submit" />
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
